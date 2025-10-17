@@ -96,7 +96,7 @@ const AnalyticsPage = () => {
     if (!analyticsData) return;
 
     let csvContent = "data:text/csv;charset=utf-8,";
-    
+
     // Helper function to add CSV rows
     const addCSVSection = (title: string, data: Array<{ [key: string]: any }>, headers: string[]) => {
       csvContent += `${title}\n`;
@@ -107,11 +107,11 @@ const AnalyticsPage = () => {
       csvContent += "\n";
     };
 
-    // Generate CSV for each section
-    addCSVSection("Candidate Pipeline", analyticsData.candidatePipeline, ["Stage", "Count"]);
-    addCSVSection("Hiring Velocity", analyticsData.hiringVelocity, ["Month", "Hires"]);
-    addCSVSection("Assessment Scores Distribution", analyticsData.assessmentScores, ["Score Range", "Count"]);
-    addCSVSection("Top Performing Jobs", analyticsData.topPerformingJobs, ["Job Title", "Applications"]);
+    // NOTE: use correct keys (camelCase) matching your data fields here:
+    addCSVSection("Candidate Pipeline", analyticsData.candidatePipeline, ["stage", "count"]);
+    addCSVSection("Hiring Velocity", analyticsData.hiringVelocity, ["month", "hires"]);
+    addCSVSection("Assessment Scores Distribution", analyticsData.assessmentScores, ["scoreRange", "count"]);
+    addCSVSection("Top Performing Jobs", analyticsData.topPerformingJobs, ["jobTitle", "applications"]);
 
     // Trigger CSV download
     const encodedUri = encodeURI(csvContent);
@@ -154,6 +154,11 @@ const AnalyticsPage = () => {
         </main>
       </div>
     );
+  }
+
+  // ADD this guard so that analyticsData is guaranteed to be non-null here:
+  if (!analyticsData) {
+    return null; // or a loading fallback if you want
   }
 
   return (
